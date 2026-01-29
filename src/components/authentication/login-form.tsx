@@ -7,6 +7,7 @@ import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
 import { Separator } from "@/src/components/ui/separator";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { authClient } from "@/src/lib/auth-client";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,14 +18,21 @@ export function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-
-    // Add your login logic here
-    console.log({ email, password });
-
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const { data, error } = await authClient.signIn.email({
+        email,
+        password,
+      });
       setIsLoading(false);
-    }, 1000);
+      if (error) {
+        console.log("Error during login:", error.message);
+      } else {
+        console.log("Login successful:", data);
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+      setIsLoading(false);
+    }
   };
 
   const handleGoogleLogin = () => {
