@@ -1,7 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Header } from "@/src/components/layout/header";
-import { Footer } from "@/src/components/layout/footer";
 import { Features } from "@/src/components/home/features";
 import { Button } from "@/src/components/ui/button";
 import {
@@ -68,7 +66,6 @@ const team = [
 export default function AboutPage() {
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
       <main className="flex-1">
         {/* Breadcrumb */}
         <div className="bg-muted py-4">
@@ -309,7 +306,6 @@ export default function AboutPage() {
 
         <Features />
       </main>
-      <Footer />
     </div>
   );
 }

@@ -1,5 +1,3 @@
-import { Header } from "@/src/components/layout/header";
-import { Footer } from "@/src/components/layout/footer";
 import { Hero } from "@/src/components/home/hero";
 import { FeaturedProducts } from "@/src/components/home/featured-products";
 import { PromoBanners } from "@/src/components/home/promo-banners";

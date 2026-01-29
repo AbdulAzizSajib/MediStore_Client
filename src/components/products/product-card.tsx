@@ -9,14 +9,24 @@ import { Badge } from "@/src/components/ui/badge";
 export interface Product {
   id: string;
   name: string;
-  price: number;
-  originalPrice?: number;
-  image: string;
-  category: string;
-  tags?: string[];
-  discount?: number;
-  isNew?: boolean;
-  rating?: number;
+  description: string;
+  price: string;
+  stock: number;
+  imageUrl: string;
+  categoryId: string;
+  sellerId: string;
+  status: string;
+  manufacturer?: string;
+  createdAt: string;
+  updatedAt: string;
+  category: {
+    id: string;
+    name: string;
+    description: string;
+    imageUrl: string;
+    createdAt: string;
+    updatedAt: string;
+  };
 }
 
 interface ProductCardProps {
@@ -24,15 +34,19 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const hasDiscount =
-    product.originalPrice && product.originalPrice > product.price;
+  // Price কে number এ convert করুন
+  const priceNumber = parseFloat(product.price);
+  const isOutOfStock = product.stock === 0;
+  const isNew =
+    new Date(product.createdAt) >
+    new Date(Date.now() - 7 * 24 * 60 * 60 * 1000); // 7 days
 
   return (
     <div className="group bg-card rounded-lg overflow-hidden border border-border hover:shadow-lg transition-shadow">
       {/* Image Container */}
       <div className="relative aspect-square bg-muted overflow-hidden">
         <Image
-          src={product.image || "/placeholder.svg"}
+          src={product.imageUrl || "/placeholder.svg"}
           alt={product.name}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -40,14 +54,15 @@ export function ProductCard({ product }: ProductCardProps) {
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
-          {product.discount && (
-            <Badge className="bg-accent text-accent-foreground">
-              -{product.discount}%
-            </Badge>
-          )}
-          {product.isNew && (
+          {isOutOfStock && <Badge variant="destructive">Out of Stock</Badge>}
+          {isNew && !isOutOfStock && (
             <Badge className="bg-primary text-primary-foreground">New</Badge>
           )}
+          {product.status === "AVAILABLE" &&
+            product.stock < 20 &&
+            product.stock > 0 && (
+              <Badge className="bg-amber-500 text-white">Low Stock</Badge>
+            )}
         </div>
 
         {/* Quick Actions */}
@@ -70,9 +85,12 @@ export function ProductCard({ product }: ProductCardProps) {
 
         {/* Add to Cart Button */}
         <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-          <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground gap-2">
+          <Button
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground gap-2"
+            disabled={isOutOfStock}
+          >
             <ShoppingCart className="h-4 w-4" />
-            Add to Cart
+            {isOutOfStock ? "Out of Stock" : "Add to Cart"}
           </Button>
         </div>
       </div>
@@ -80,13 +98,11 @@ export function ProductCard({ product }: ProductCardProps) {
       {/* Content */}
       <div className="p-4">
         {/* Category */}
-        {product.tags && product.tags.length > 0 && (
+        {product.category && (
           <div className="flex flex-wrap gap-1 mb-2">
-            {product.tags.map((tag) => (
-              <span key={tag} className="text-xs text-primary">
-                [{tag}]
-              </span>
-            ))}
+            <span className="text-xs text-primary">
+              [{product.category.name}]
+            </span>
           </div>
         )}
 
@@ -97,17 +113,29 @@ export function ProductCard({ product }: ProductCardProps) {
           </h3>
         </Link>
 
-        {/* Price */}
-        <div className="flex items-center gap-2">
-          <span className="text-lg font-semibold text-primary">
-            ${product.price.toFixed(2)}
-          </span>
-          {hasDiscount && (
-            <span className="text-sm text-muted-foreground line-through">
-              ${product.originalPrice?.toFixed(2)}
+        {/* Description */}
+        <p className="text-xs text-muted-foreground mb-2 line-clamp-1">
+          {product.description}
+        </p>
+
+        {/* Price & Stock */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-lg font-semibold text-primary">
+              ৳{priceNumber.toFixed(2)}
             </span>
-          )}
+          </div>
+          <span className="text-xs text-muted-foreground">
+            Stock: {product.stock}
+          </span>
         </div>
+
+        {/* Manufacturer */}
+        {product.manufacturer && (
+          <p className="text-xs text-muted-foreground mt-2">
+            By {product.manufacturer}
+          </p>
+        )}
       </div>
     </div>
   );

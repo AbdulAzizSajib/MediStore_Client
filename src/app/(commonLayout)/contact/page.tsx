@@ -4,8 +4,6 @@ import React from "react";
 
 import { useState } from "react";
 import Link from "next/link";
-import { Header } from "@/src/components/layout/header";
-import { Footer } from "@/src/components/layout/footer";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Textarea } from "@/src/components/ui/textarea";
@@ -99,7 +97,6 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
       <main className="flex-1">
         {/* Breadcrumb */}
         <div className="bg-muted py-4">
@@ -358,7 +355,6 @@ export default function ContactPage() {
           </div>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }
