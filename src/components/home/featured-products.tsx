@@ -19,8 +19,8 @@ export async function FeaturedProducts() {
         </Link>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {medicines && medicines.length > 0 ? (
-          medicines.map((product: any) => (
+        {medicines && medicines.data.data.length > 0 ? (
+          medicines.data.data.map((product: any) => (
             <ProductCard key={product.id} product={product} />
           ))
         ) : (

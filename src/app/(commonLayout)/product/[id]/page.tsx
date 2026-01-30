@@ -121,7 +121,7 @@ export default async function ProductDetailPage({
                 {/* Price */}
                 <div className="flex items-center gap-4">
                   <span className="text-3xl font-bold text-primary">
-                    ${price.toFixed(2)}
+                    ৳{price.toFixed(2)}
                   </span>
                 </div>
 
@@ -140,7 +140,11 @@ export default async function ProductDetailPage({
                 {/* Quantity & Add to Cart */}
                 <ProductQuantitySelector
                   productId={product.id}
+                  productName={product.name}
+                  price={price}
+                  imageUrl={product.imageUrl || "/placeholder.svg"}
                   stock={product.stock}
+                  manufacturer={product.manufacturer}
                 />
 
                 {/* Features */}
@@ -154,7 +158,7 @@ export default async function ProductDetailPage({
                         Free Shipping
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Orders over $50
+                        Orders over ৳500
                       </p>
                     </div>
                   </div>

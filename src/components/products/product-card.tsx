@@ -5,6 +5,9 @@ import Link from "next/link";
 import { Heart, ShoppingCart, Eye } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import { Badge } from "@/src/components/ui/badge";
+import { useAppDispatch } from "@/src/store/hooks";
+import { addToCart } from "@/src/store/slices/cartSlice";
+import { useToast } from "@/src/hooks/use-toast";
 
 export interface Product {
   id: string;
@@ -34,12 +37,34 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  // Price কে number এ convert করুন
+  const dispatch = useAppDispatch();
+  const { toast } = useToast();
+
   const priceNumber = parseFloat(product.price);
   const isOutOfStock = product.stock === 0;
   const isNew =
     new Date(product.createdAt) >
     new Date(Date.now() - 7 * 24 * 60 * 60 * 1000); // 7 days
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(
+      addToCart({
+        id: product.id,
+        name: product.name,
+        price: priceNumber,
+        quantity: 1,
+        imageUrl: product.imageUrl || "/placeholder.svg",
+        stock: product.stock,
+        manufacturer: product.manufacturer,
+      })
+    );
+    toast({
+      title: "Added to cart",
+      description: `${product.name} added to your cart`,
+    });
+  };
 
   return (
     <div className="group bg-card rounded-lg overflow-hidden border border-border hover:shadow-lg transition-shadow">
@@ -88,6 +113,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <Button
             className="w-full bg-primary hover:bg-primary/90 text-primary-foreground gap-2"
             disabled={isOutOfStock}
+            onClick={handleAddToCart}
           >
             <ShoppingCart className="h-4 w-4" />
             {isOutOfStock ? "Out of Stock" : "Add to Cart"}

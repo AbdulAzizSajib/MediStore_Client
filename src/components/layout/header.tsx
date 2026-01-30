@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Search,
   ShoppingCart,
@@ -12,6 +12,8 @@ import {
   Mail,
   Heart,
 } from "lucide-react";
+import { useAppSelector } from "@/src/store/hooks";
+import { selectCartTotalQuantity } from "@/src/store/slices/cartSlice";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import {
@@ -23,7 +25,14 @@ import {
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [cartCount] = useState(3);
+  const [mounted, setMounted] = useState(false);
+  const cartTotalQuantity = useAppSelector(selectCartTotalQuantity);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const cartCount = mounted ? cartTotalQuantity : 0;
 
   return (
     <header className="w-full">
@@ -129,14 +138,16 @@ export function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingCart className="h-5 w-5" />
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-accent text-accent-foreground text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
-            </Button>
+            <Link href="/cart">
+              <Button variant="ghost" size="icon" className="relative">
+                <ShoppingCart className="h-5 w-5" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-accent text-accent-foreground text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </Button>
+            </Link>
 
             <Button
               variant="ghost"
@@ -167,53 +178,11 @@ export function Header() {
               </Link>
             </li>
             <li>
-              <DropdownMenu>
-                <DropdownMenuTrigger className="font-medium text-foreground hover:text-primary transition-colors flex items-center gap-1">
-                  Shop
-                  <svg
-                    className="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem>
-                    <Link href="/shop">All Products</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link href="/shop?category=medical">Medical Supplies</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link href="/shop?category=personal">Personal Care</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link href="/shop?category=baby">Baby Care</Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </li>
-            <li>
               <Link
-                href="/shop?category=medical"
+                href="/shop"
                 className="font-medium text-foreground hover:text-primary transition-colors"
               >
-                Medical Supplies
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/shop?category=personal"
-                className="font-medium text-foreground hover:text-primary transition-colors"
-              >
-                Personal Care
+                Shop
               </Link>
             </li>
             <li>

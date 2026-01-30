@@ -3,25 +3,52 @@
 import { useState } from "react";
 import { Button } from "@/src/components/ui/button";
 import { Heart, ShoppingCart, Share2, Minus, Plus } from "lucide-react";
+import { useAppDispatch } from "@/src/store/hooks";
+import { addToCart } from "@/src/store/slices/cartSlice";
+import { useToast } from "@/src/hooks/use-toast";
 
 interface ProductQuantitySelectorProps {
   productId: string;
+  productName: string;
+  price: number;
+  imageUrl: string;
   stock: number;
+  manufacturer?: string;
 }
 
 export function ProductQuantitySelector({
   productId,
+  productName,
+  price,
+  imageUrl,
   stock,
+  manufacturer,
 }: ProductQuantitySelectorProps) {
   const [quantity, setQuantity] = useState(1);
+  const dispatch = useAppDispatch();
+  const { toast } = useToast();
 
   const incrementQuantity = () =>
     setQuantity((q) => Math.min(stock, q + 1));
   const decrementQuantity = () => setQuantity((q) => Math.max(1, q - 1));
 
   const handleAddToCart = () => {
-    // TODO: Implement add to cart functionality
-    console.log(`Adding ${quantity} of product ${productId} to cart`);
+    dispatch(
+      addToCart({
+        id: productId,
+        name: productName,
+        price,
+        quantity,
+        imageUrl,
+        stock,
+        manufacturer,
+      })
+    );
+    toast({
+      title: "Added to cart",
+      description: `${quantity} x ${productName} added to your cart`,
+    });
+    setQuantity(1);
   };
 
   return (
