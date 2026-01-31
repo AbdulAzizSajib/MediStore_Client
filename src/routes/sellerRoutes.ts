@@ -54,3 +54,8 @@ export const sellerRoutes: Route[] = [
     ],
   },
 ];
+
+// LP6AplCRCEgRfD4f1qZD53vhmwZRiZ5Y seller - sajib 2
+// rAlILtcXs0skj5YHN6wSSxjhwOJtuS03
+// rAlILtcXs0skj5YHN6wSSxjhwOJtuS03
+// pIzRhCCJ8U0Oe8vvrAGKcGZQFcnxyc0a.JkR6xrwHy6xGnmz%2FVz8%2Bem0SVBo7j3bwc8WQU%2BQRRFw%3D

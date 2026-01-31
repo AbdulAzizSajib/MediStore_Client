@@ -1,19 +1,3 @@
-// import React from "react";
-
-// export default function DashboardLayout({
-//   admin,
-//   seller,
-// }: {
-//   admin: React.ReactNode;
-//   seller: React.ReactNode;
-// }) {
-//   return (
-//     <div className="min-h-screen">
-//       {admin}
-//       {seller}
-//     </div>
-//   );
-// }
 import { AppSidebar } from "@/src/components/layout/app-sidebar";
 import {
   Breadcrumb,
@@ -41,7 +25,6 @@ export default async function DashboardLayout({
   seller: React.ReactNode;
 }) {
   const { data } = await userService.getSession();
-
   const userInfo = data.user;
 
   return (

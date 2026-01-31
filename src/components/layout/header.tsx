@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import {
   Search,
@@ -11,6 +12,7 @@ import {
   Phone,
   Mail,
   Heart,
+  LogOut,
 } from "lucide-react";
 import { useAppSelector } from "@/src/store/hooks";
 import { selectCartTotalQuantity } from "@/src/store/slices/cartSlice";
@@ -20,12 +22,23 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
+import { Roles } from "@/src/constants/roles";
+import { authClient } from "@/src/lib/auth-client";
+import { useToast } from "@/src/hooks/use-toast";
 
-export function Header() {
+export function Header({
+  userRole,
+}: {
+  userRole?: string;
+}) {
+  const router = useRouter();
+  const { toast } = useToast();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const cartTotalQuantity = useAppSelector(selectCartTotalQuantity);
 
   useEffect(() => {
@@ -33,6 +46,34 @@ export function Header() {
   }, []);
 
   const cartCount = mounted ? cartTotalQuantity : 0;
+
+  const dashboardUrl =
+    userRole === Roles.ADMIN ? "/admin-dashboard" : "/seller-dashboard";
+
+  const shouldShowDashboard = userRole && userRole !== Roles.CUSTOMER;
+  const isLoggedIn = !!userRole;
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await authClient.signOut();
+      toast({
+        title: "Logged out",
+        description: "You have been successfully logged out",
+      });
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast({
+        title: "Logout failed",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
 
   return (
     <header className="w-full">
@@ -123,18 +164,37 @@ export function Header() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>
-                  <Link href="/login">Login</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/account">My Account</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/orders">Orders</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/wishlist">Wishlist</Link>
-                </DropdownMenuItem>
+                {isLoggedIn ? (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link href="/account">My Account</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/orders">Orders</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/wishlist">Wishlist</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={handleLogout}
+                      disabled={isLoggingOut}
+                      className="text-destructive focus:text-destructive"
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      {isLoggingOut ? "Logging out..." : "Logout"}
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link href="/login">Login</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/register">Register</Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -201,6 +261,16 @@ export function Header() {
                 Contact
               </Link>
             </li>
+            {shouldShowDashboard && (
+              <li>
+                <Link
+                  href={dashboardUrl}
+                  className="font-medium text-foreground hover:text-primary transition-colors"
+                >
+                  Dashboard
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </nav>

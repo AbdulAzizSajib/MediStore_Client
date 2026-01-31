@@ -8,8 +8,10 @@ import { Label } from "@/src/components/ui/label";
 import { Separator } from "@/src/components/ui/separator";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { authClient } from "@/src/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export function LoginForm() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,6 +30,8 @@ export function LoginForm() {
         console.log("Error during login:", error.message);
       } else {
         console.log("Login successful:", data);
+        router.push("/");
+        router.refresh();
       }
     } catch (error) {
       console.error("Login failed:", error);

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Poppins, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { StoreProvider } from "@/src/store/StoreProvider";
+import { Toaster } from "@/src/components/ui/toaster";
 
 const _poppins = Poppins({
   subsets: ["latin"],
@@ -24,7 +25,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased bg-background text-foreground">
-        <StoreProvider>{children}</StoreProvider>
+        <StoreProvider>
+          {children}
+          <Toaster />
+        </StoreProvider>
       </body>
     </html>
   );

@@ -1,6 +1,4 @@
-import { env } from "./../env";
-
-const API_URL = env.API_URL;
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export interface Category {
   id: string;
@@ -14,7 +12,7 @@ export interface Category {
 export const categoryService = {
   getAllCategories: async () => {
     try {
-      const res = await fetch(`${API_URL}/category`, {
+      const res = await fetch(`${API_URL}api/category`, {
         next: { tags: ["categories"] },
       });
 
