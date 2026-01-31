@@ -15,10 +15,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/src/components/ui/select";
-import { sellerProductService } from "@/src/services/seller.service";
-import { categoryService } from "@/src/services/category.service";
 import { useToast } from "@/src/hooks/use-toast";
 import { use } from "react";
+import { allCategoriesAction } from "@/src/actions/category.action";
+import {
+  getProductByIdAction,
+  updateProductAction,
+} from "@/src/actions/seller.action";
 
 interface Category {
   id: string;
@@ -53,8 +56,8 @@ export default function EditProductPage({ params }: EditProductPageProps) {
   useEffect(() => {
     const fetchData = async () => {
       const [productRes, categoriesRes] = await Promise.all([
-        sellerProductService.getProductById(id),
-        categoryService.getAllCategories(),
+        getProductByIdAction(id),
+        allCategoriesAction(),
       ]);
 
       if (productRes.error) {
@@ -120,7 +123,7 @@ export default function EditProductPage({ params }: EditProductPageProps) {
 
     setIsLoading(true);
 
-    const { data, error } = await sellerProductService.updateProduct(id, {
+    const { data, error } = await updateProductAction(id, {
       name: formData.name.trim(),
       description: formData.description.trim(),
       price: parseFloat(formData.price),
@@ -151,7 +154,7 @@ export default function EditProductPage({ params }: EditProductPageProps) {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));

@@ -1,15 +1,8 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Poppins, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { StoreProvider } from "@/src/store/StoreProvider";
 import { Toaster } from "@/src/components/ui/toaster";
-
-const _poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-});
-const _openSans = Open_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "MediCare - Your Trusted Drugstore",

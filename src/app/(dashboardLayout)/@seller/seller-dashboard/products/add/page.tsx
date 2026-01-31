@@ -19,6 +19,7 @@ import { sellerProductService } from "@/src/services/seller.service";
 import { categoryService } from "@/src/services/category.service";
 import { useToast } from "@/src/hooks/use-toast";
 import { createProductAction } from "@/src/actions/seller.action";
+import { allCategoriesAction } from "@/src/actions/category.action";
 
 interface Category {
   id: string;
@@ -47,7 +48,7 @@ export default function AddProductPage() {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const { data, error } = await categoryService.getAllCategories();
+      const { data, error } = await allCategoriesAction();
       if (error) {
         toast({
           title: "Error",

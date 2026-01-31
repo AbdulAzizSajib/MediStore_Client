@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { userService } from "./services/user.service";
-import { Roles } from "./constants/roles";
+import { Roles } from "./src/constants/roles";
+
+const AUTH_URL = process.env.AUTH_URL;
 
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
@@ -10,17 +11,34 @@ export async function proxy(request: NextRequest) {
   let isSeller = false;
   let isCustomer = false;
 
-  const { data } = await userService.getSession();
-  console.log(" Session data in proxy:", data);
-  if (data) {
-    isAuthenticated = true;
-    if (data.user.role === Roles.ADMIN) {
-      isAdmin = true;
-    } else if (data.user.role === Roles.SELLER) {
-      isSeller = true;
-    } else if (data.user.role === Roles.CUSTOMER) {
-      isCustomer = true;
+  try {
+    // Use request.cookies in middleware (not cookies() from next/headers)
+    const cookieHeader = request.headers.get("cookie") || "";
+
+    const res = await fetch(`${AUTH_URL}/get-session`, {
+      headers: {
+        cookie: cookieHeader,
+      },
+      cache: "no-store",
+    });
+
+    const data = await res.json();
+    console.log("Session data in proxy:", data);
+
+    if (data && data.user) {
+      isAuthenticated = true;
+      if (data.user.role === Roles.ADMIN) {
+        isAdmin = true;
+      } else if (data.user.role === Roles.SELLER) {
+        isSeller = true;
+      } else if (data.user.role === Roles.CUSTOMER) {
+        isCustomer = true;
+      }
     }
+  } catch (error) {
+    console.log("Session error in proxy:", error);
+    // If session fetch fails, treat as unauthenticated
+    isAuthenticated = false;
   }
   //..........
 

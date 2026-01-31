@@ -3,6 +3,8 @@ import { Header } from "@/src/components/layout/header";
 import { userService } from "@/src/services/user.service";
 import React from "react";
 
+export const dynamic = "force-dynamic";
+
 export default async function Commonlayout({
   children,
 }: {
