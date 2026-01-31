@@ -1,4 +1,13 @@
-import { proxy, config } from "./proxy";
+import { proxy } from "./proxy";
 
 export default proxy;
-export { config };
+
+export const config = {
+  matcher: [
+    "/login",
+    "/admin-dashboard",
+    "/admin-dashboard/:path*",
+    "/seller-dashboard",
+    "/seller-dashboard/:path*",
+  ],
+};

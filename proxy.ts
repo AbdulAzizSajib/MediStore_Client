@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Roles } from "./src/constants/roles";
 
-const AUTH_URL = process.env.AUTH_URL;
-
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
@@ -12,10 +10,12 @@ export async function proxy(request: NextRequest) {
   let isCustomer = false;
 
   try {
-    // Use request.cookies in middleware (not cookies() from next/headers)
+    // Use the same origin to go through the /api/auth proxy (set in next.config.mjs)
+    // This ensures cookies are on the same domain
+    const origin = request.nextUrl.origin;
     const cookieHeader = request.headers.get("cookie") || "";
 
-    const res = await fetch(`${AUTH_URL}/get-session`, {
+    const res = await fetch(`${origin}/api/auth/get-session`, {
       headers: {
         cookie: cookieHeader,
       },
