@@ -1,3 +1,6 @@
+import { env } from "./../env";
+import { cookies } from "next/headers";
+
 export interface OrderItem {
   medicineId: string;
   quantity: number;
@@ -20,17 +23,19 @@ export interface Order {
   updatedAt: string;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const API_URL = env.API_URL;
 
 export const orderService = {
   createOrder: async (payload: CreateOrderPayload) => {
     try {
-      const res = await fetch(`${API_URL}api/order`, {
+      const cookieStore = await cookies();
+      const res = await fetch(`${API_URL}/order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          cookie: cookieStore.toString(),
         },
-        credentials: "include",
+
         body: JSON.stringify(payload),
       });
 
@@ -57,31 +62,31 @@ export const orderService = {
     }
   },
 
-  getUserOrders: async () => {
-    try {
-      const res = await fetch(`${API_URL}/api/orders/my-orders`, {
-        credentials: "include",
-        cache: "no-store",
-      });
+  // getUserOrders: async () => {
+  //   try {
+  //     const res = await fetch(`${API_URL}/api/orders/my-orders`, {
+  //       credentials: "include",
+  //       cache: "no-store",
+  //     });
 
-      if (!res.ok) {
-        return {
-          data: null,
-          error: { message: "Failed to fetch orders" },
-        };
-      }
+  //     if (!res.ok) {
+  //       return {
+  //         data: null,
+  //         error: { message: "Failed to fetch orders" },
+  //       };
+  //     }
 
-      const response = await res.json();
-      return {
-        data: response.data as Order[],
-        error: null,
-      };
-    } catch (error) {
-      console.error("Fetch orders error:", error);
-      return {
-        data: null,
-        error: { message: "Failed to fetch orders" },
-      };
-    }
-  },
+  //     const response = await res.json();
+  //     return {
+  //       data: response.data as Order[],
+  //       error: null,
+  //     };
+  //   } catch (error) {
+  //     console.error("Fetch orders error:", error);
+  //     return {
+  //       data: null,
+  //       error: { message: "Failed to fetch orders" },
+  //     };
+  //   }
+  // },
 };

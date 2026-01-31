@@ -1,4 +1,6 @@
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+import { cookies } from "next/headers";
+import { env } from "./../env";
+const API_URL = env.API_URL;
 
 export interface Category {
   id: string;
@@ -12,8 +14,13 @@ export interface Category {
 export const categoryService = {
   getAllCategories: async () => {
     try {
-      const res = await fetch(`${API_URL}api/category`, {
-        next: { tags: ["categories"] },
+      const cookieStore = await cookies();
+      const res = await fetch(`${API_URL}/category`, {
+        // next: { tags: ["categories"] },
+        headers: {
+          cookie: cookieStore.toString(),
+        },
+        cache: "no-store",
       });
 
       if (!res.ok) {

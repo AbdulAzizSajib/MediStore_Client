@@ -1,7 +1,7 @@
 import { productService } from "@/src/services/product.service";
-import { categoryService } from "@/src/services/category.service";
 import { ShopFilters } from "./shop-filters";
 import { ShopProductList } from "./shop-product-list";
+import { allCategoriesAction } from "@/src/actions/category.action";
 
 interface ShopPageProps {
   searchParams: Promise<{
@@ -18,7 +18,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
   const params = await searchParams;
 
   const [categoriesResult, productsResult] = await Promise.all([
-    categoryService.getAllCategories(),
+    allCategoriesAction(),
     productService.getAllProduct({
       search: params.search,
       category: params.category,

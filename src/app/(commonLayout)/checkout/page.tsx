@@ -15,8 +15,9 @@ import {
   selectCartSubtotal,
   clearCart,
 } from "@/src/store/slices/cartSlice";
-import { orderService } from "@/src/services/order.service";
+
 import { useToast } from "@/src/hooks/use-toast";
+import { createOrderAction } from "@/src/actions/order.action";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -31,7 +32,7 @@ export default function CheckoutPage() {
   const [phone, setPhone] = useState("");
   const [shippingAddress, setShippingAddress] = useState("");
   const [errors, setErrors] = useState<{ phone?: string; address?: string }>(
-    {}
+    {},
   );
 
   const cartItems = useAppSelector(selectCartItems);
@@ -78,7 +79,7 @@ export default function CheckoutPage() {
       quantity: item.quantity,
     }));
 
-    const { data, error } = await orderService.createOrder({
+    const { data, error } = await createOrderAction({
       phone: phone.trim(),
       shippingAddress: shippingAddress.trim(),
       orderItems,
@@ -270,7 +271,9 @@ export default function CheckoutPage() {
                   <div className="space-y-3 border-t border-border pt-4">
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Subtotal</span>
-                      <span className="font-medium">৳{subtotal.toFixed(2)}</span>
+                      <span className="font-medium">
+                        ৳{subtotal.toFixed(2)}
+                      </span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Shipping</span>

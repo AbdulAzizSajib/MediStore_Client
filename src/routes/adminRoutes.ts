@@ -26,17 +26,17 @@ export const adminRoutes: Route[] = [
         url: "/admin-dashboard/users",
       },
       {
-        title: "Sellers",
-        url: "/admin-dashboard/sellers",
+        title: "Category",
+        url: "/admin-dashboard/category",
       },
     ],
   },
   {
-    title: "Settings",
+    title: "Account",
     items: [
       {
-        title: "General",
-        url: "/admin-dashboard/settings",
+        title: "Back To Store",
+        url: "/",
       },
     ],
   },
