@@ -3,6 +3,7 @@ import * as React from "react";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -12,6 +13,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/src/components/ui/sidebar";
+import { LogoutButton } from "@/src/components/layout/logout-button";
 import Link from "next/link";
 import { adminRoutes } from "@/src/routes/adminRoutes";
 import { sellerRoutes } from "@/src/routes/sellerRoutes";
@@ -58,6 +60,9 @@ export function AppSidebar({
           </SidebarGroup>
         ))}
       </SidebarContent>
+      <SidebarFooter>
+        <LogoutButton />
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );

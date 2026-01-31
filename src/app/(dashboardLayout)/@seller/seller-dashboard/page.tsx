@@ -1,7 +1,5 @@
+import { redirect } from "next/navigation";
+
 export default function SellerDashboard() {
-  return (
-    <div>
-      <h1> Seller Dashboard </h1>
-    </div>
-  );
+  return redirect("/seller-dashboard/orders");
 }

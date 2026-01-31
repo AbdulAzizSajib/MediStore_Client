@@ -44,8 +44,6 @@ export const productService = {
 
       const medicines = await res.json();
 
-      //   const medicines = response?.data?.data || [];
-
       return {
         data: medicines,
         error: null,
