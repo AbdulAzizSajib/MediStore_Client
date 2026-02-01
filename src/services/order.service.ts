@@ -1,7 +1,7 @@
 import { env } from "./../env";
 import { cookies } from "next/headers";
 
-export interface OrderItem {
+export interface CreateOrderItemPayload {
   medicineId: string;
   quantity: number;
 }
@@ -9,7 +9,25 @@ export interface OrderItem {
 export interface CreateOrderPayload {
   phone: string;
   shippingAddress: string;
-  orderItems: OrderItem[];
+  orderItems: CreateOrderItemPayload[];
+}
+
+export interface Medicine {
+  id: string;
+  name: string;
+  imageUrl: string | null;
+}
+
+export interface OrderItem {
+  id: string;
+  orderId: string;
+  medicineId: string;
+  sellerId: string;
+  quantity: number;
+  price: string;
+  createdAt: string;
+  updatedAt: string;
+  medicine: Medicine;
 }
 
 export interface Order {
@@ -17,10 +35,11 @@ export interface Order {
   userId: string;
   phone: string;
   shippingAddress: string;
-  status: string;
-  totalAmount: number;
+  status: "PLACED" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
+  totalAmount: string;
   createdAt: string;
   updatedAt: string;
+  orderItems: OrderItem[];
 }
 
 const API_URL = env.API_URL;
@@ -62,31 +81,67 @@ export const orderService = {
     }
   },
 
-  // getUserOrders: async () => {
-  //   try {
-  //     const res = await fetch(`${API_URL}/api/orders/my-orders`, {
-  //       credentials: "include",
-  //       cache: "no-store",
-  //     });
+  getUserOrders: async () => {
+    try {
+      const cookieStore = await cookies();
+      const res = await fetch(`${API_URL}/order`, {
+        method: "GET",
+        headers: {
+          cookie: cookieStore.toString(),
+        },
+        cache: "no-store",
+      });
 
-  //     if (!res.ok) {
-  //       return {
-  //         data: null,
-  //         error: { message: "Failed to fetch orders" },
-  //       };
-  //     }
+      if (!res.ok) {
+        return {
+          data: null,
+          error: { message: "Failed to fetch orders" },
+        };
+      }
 
-  //     const response = await res.json();
-  //     return {
-  //       data: response.data as Order[],
-  //       error: null,
-  //     };
-  //   } catch (error) {
-  //     console.error("Fetch orders error:", error);
-  //     return {
-  //       data: null,
-  //       error: { message: "Failed to fetch orders" },
-  //     };
-  //   }
-  // },
+      const response = await res.json();
+      return {
+        data: response.data,
+        error: null,
+      };
+    } catch (error) {
+      console.error("Fetch orders error:", error);
+      return {
+        data: null,
+        error: { message: "Failed to fetch orders" },
+      };
+    }
+  },
+
+  trackOrderStatus: async (orderId: string) => {
+    try {
+      const cookieStore = await cookies();
+      const res = await fetch(`${API_URL}/order/${orderId}/status`, {
+        method: "GET",
+        headers: {
+          cookie: cookieStore.toString(),
+        },
+        cache: "no-store",
+      });
+
+      if (!res.ok) {
+        return {
+          data: null,
+          error: { message: "Failed to fetch order status" },
+        };
+      }
+
+      const response = await res.json();
+      return {
+        data: response.data as { status: Order["status"] },
+        error: null,
+      };
+    } catch (error) {
+      console.error("Fetch order status error:", error);
+      return {
+        data: null,
+        error: { message: "Failed to fetch order status" },
+      };
+    }
+  },
 };
