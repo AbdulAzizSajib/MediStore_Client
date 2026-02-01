@@ -11,6 +11,7 @@ export const env = createEnv({
 
   client: {
     NEXT_PUBLIC_BACKEND_URL: z.string().url(),
+    NEXT_PUBLIC_FRONTEND_URL: z.string().url(),
     NEXT_PUBLIC_TEST: z.string(),
   },
 
@@ -21,5 +22,6 @@ export const env = createEnv({
     AUTH_URL: process.env.AUTH_URL,
     NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
     NEXT_PUBLIC_TEST: process.env.NEXT_PUBLIC_TEST,
+    NEXT_PUBLIC_FRONTEND_URL: process.env.NEXT_PUBLIC_FRONTEND_URL,
   },
 });

@@ -6,14 +6,14 @@ import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
 import { Separator } from "@/src/components/ui/separator";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, User } from "lucide-react";
 import { authClient } from "@/src/lib/auth-client";
 import { useRouter } from "next/navigation";
-import { env } from "@/src/env";
 
-export function LoginForm() {
+export function RegisterForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -22,33 +22,28 @@ export function LoginForm() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const { data, error } = await authClient.signIn.email({
+      const { data, error } = await authClient.signUp.email({
+        name,
         email,
         password,
       });
       setIsLoading(false);
       if (error) {
-        console.log("Error during login:", error.message);
+        console.log("Error during registration:", error.message);
       } else {
-        console.log("Login successful:", data);
-        router.push("/");
+        console.log("Registration successful:", data);
+        router.push("/login");
         router.refresh();
       }
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error("Registration failed:", error);
       setIsLoading(false);
     }
   };
 
-  const handleGoogleLogin = async() => {
-    const data = await authClient.signIn.social({
-      provider: 'google',
-      // callbackURL: "http://localhost:3000",
-      callbackURL: `${env.NEXT_PUBLIC_FRONTEND_URL}`,
-
-    })
+  const handleGoogleSignup = () => {
     // Add Google OAuth logic here
-    console.log("Google login clicked", data);
+    console.log("Google signup clicked");
   };
 
   return (
@@ -71,13 +66,32 @@ export function LoginForm() {
             </svg>
           </div>
         </div>
-        <h2 className="text-2xl font-bold text-foreground">Welcome Back</h2>
+        <h2 className="text-2xl font-bold text-foreground">Create Account</h2>
         <p className="text-sm text-muted-foreground mt-1">
-          Sign in to your MediStore  account
+          Sign up for a MediStore account
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Name Field */}
+        <div className="space-y-2">
+          <Label htmlFor="name" className="text-foreground font-medium">
+            Full Name
+          </Label>
+          <div className="relative">
+            <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input
+              id="name"
+              type="text"
+              placeholder="John Doe"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="pl-10 h-11 border-border focus:border-primary"
+              required
+            />
+          </div>
+        </div>
+
         {/* Email Field */}
         <div className="space-y-2">
           <Label htmlFor="email" className="text-foreground font-medium">
@@ -99,23 +113,15 @@ export function LoginForm() {
 
         {/* Password Field */}
         <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="password" className="text-foreground font-medium">
-              Password
-            </Label>
-            <Link
-              href="/forgot-password"
-              className="text-sm text-primary hover:text-primary/80 hover:underline"
-            >
-              Forgot?
-            </Link>
-          </div>
+          <Label htmlFor="password" className="text-foreground font-medium">
+            Password
+          </Label>
           <div className="relative">
             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
               id="password"
               type={showPassword ? "text" : "password"}
-              placeholder="Enter your password"
+              placeholder="Create a password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="pl-10 pr-10 h-11 border-border focus:border-primary"
@@ -135,7 +141,7 @@ export function LoginForm() {
           </div>
         </div>
 
-        {/* Login Button */}
+        {/* Sign Up Button */}
         <Button
           type="submit"
           className="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
@@ -144,10 +150,10 @@ export function LoginForm() {
           {isLoading ? (
             <div className="flex items-center gap-2">
               <div className="h-4 w-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-              Signing in...
+              Creating account...
             </div>
           ) : (
-            "Sign In"
+            "Sign Up"
           )}
         </Button>
       </form>
@@ -160,12 +166,12 @@ export function LoginForm() {
         </span>
       </div>
 
-      {/* Google Login */}
+      {/* Google Sign Up */}
       <Button
         type="button"
         variant="outline"
         className="w-full h-11 border-border hover:bg-accent hover:border-primary/50"
-        onClick={handleGoogleLogin}
+        onClick={handleGoogleSignup}
       >
         <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
           <path
@@ -185,17 +191,17 @@ export function LoginForm() {
             d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
           />
         </svg>
-        Sign in with Google
+        Sign up with Google
       </Button>
 
-      {/* Sign Up Link */}
+      {/* Login Link */}
       <p className="text-center text-sm text-muted-foreground mt-6">
-        Don't have an account?{" "}
+        Already have an account?{" "}
         <Link
-          href="/signup"
+          href="/login"
           className="text-primary hover:text-primary/80 font-medium hover:underline"
         >
-          Sign up
+          Sign in
         </Link>
       </p>
     </div>

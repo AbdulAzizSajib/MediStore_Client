@@ -28,14 +28,14 @@ const contactInfo = [
   {
     icon: Phone,
     title: "Phone Number",
-    details: ["+1 (800) 123-4567", "+1 (800) 987-6543"],
+    details: ["(+880) 123-4567", "+1 (800) 987-6543"],
     action: { label: "Call Now", href: "tel:+18001234567" },
   },
   {
     icon: Mail,
     title: "Email Address",
-    details: ["support@medicare.com", "info@medicare.com"],
-    action: { label: "Send Email", href: "mailto:support@medicare.com" },
+    details: ["support@MediStore .com", "info@MediStore .com"],
+    action: { label: "Send Email", href: "mailto:support@MediStore .com" },
   },
   {
     icon: Clock,
@@ -235,7 +235,7 @@ export default function ContactPage() {
                           type="tel"
                           value={formData.phone}
                           onChange={handleChange}
-                          placeholder="+1 (800) 123-4567"
+                          placeholder="(+880) 123-4567"
                         />
                       </div>
                       <div>
@@ -349,7 +349,7 @@ export default function ContactPage() {
                 className="font-semibold gap-2"
               >
                 <Phone className="h-5 w-5" />
-                Call +1 (800) 123-4567
+                Call (+880) 123-4567
               </Button>
             </Link>
           </div>

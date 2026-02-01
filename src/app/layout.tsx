@@ -5,7 +5,7 @@ import { StoreProvider } from "@/src/store/StoreProvider";
 import { Toaster } from "@/src/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: "MediCare - Your Trusted Drugstore",
+  title: "MediStore  - Your Trusted Online Medicine Shop",
   description:
     "Quality medical supplies, healthcare products, and pharmacy services for your well-being",
 };
@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className="font-sans antialiased bg-background text-foreground">
         <StoreProvider>
           {children}
-          <Toaster />
+          <Toaster  />
         </StoreProvider>
       </body>
     </html>

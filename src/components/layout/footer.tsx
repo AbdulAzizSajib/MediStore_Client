@@ -35,7 +35,7 @@ export function Footer() {
                   />
                 </svg>
               </div>
-              <span className="text-xl font-bold">MediCare</span>
+              <span className="text-xl font-bold">MediStore </span>
             </div>
             <p className="text-background/70 mb-4 leading-relaxed">
               Your trusted online drugstore for quality medical supplies,
@@ -128,11 +128,11 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-primary shrink-0" />
-                <span className="text-background/70">+1 (800) 123-4567</span>
+                <span className="text-background/70">(+880) 123-4567</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-primary shrink-0" />
-                <span className="text-background/70">support@medicare.com</span>
+                <span className="text-background/70">support@MediStore .com</span>
               </li>
             </ul>
           </div>
@@ -162,7 +162,7 @@ export function Footer() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-background/60 text-sm">
-              &copy; 2026 MediCare. All rights reserved.
+              &copy; 2026 MediStore . All rights reserved.
             </p>
             <div className="flex items-center gap-4 text-sm">
               <Link

@@ -83,11 +83,11 @@ export function Header({
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
-              <span>+1 (800) 123-4567</span>
+              <span>(+880) 123-4567</span>
             </div>
             <div className="hidden md:flex items-center gap-2">
               <Mail className="h-4 w-4" />
-              <span>support@medicare.com</span>
+              <span>support@MediStore .com</span>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -124,7 +124,7 @@ export function Header({
                 />
               </svg>
             </div>
-            <span className="text-xl font-bold text-foreground">MediCare</span>
+            <span className="text-xl font-bold text-foreground">MediStore </span>
           </Link>
 
           {/* Search Bar */}
@@ -152,9 +152,9 @@ export function Header({
               className="hidden sm:flex relative"
             >
               <Heart className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-accent text-accent-foreground text-xs w-5 h-5 rounded-full flex items-center justify-center">
+              {/* <span className="absolute -top-1 -right-1 bg-accent text-accent-foreground text-xs w-5 h-5 rounded-full flex items-center justify-center">
                 2
-              </span>
+              </span> */}
             </Button>
 
             <DropdownMenu>

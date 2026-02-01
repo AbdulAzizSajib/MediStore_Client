@@ -244,7 +244,7 @@ export default function CheckoutPage() {
                   <div className="space-y-4 mb-6 max-h-64 overflow-y-auto">
                     {cartItems.map((item) => (
                       <div key={item.id} className="flex gap-3">
-                        <div className="relative w-16 h-16 flex-shrink-0">
+                        <div className="relative w-16 h-16 shrink-0">
                           <Image
                             src={item.imageUrl || "/placeholder.svg"}
                             alt={item.name}

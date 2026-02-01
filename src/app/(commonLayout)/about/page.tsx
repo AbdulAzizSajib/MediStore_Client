@@ -89,13 +89,13 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
                 <span className="text-primary font-medium mb-2 block">
-                  About MediCare
+                  About MediStore 
                 </span>
                 <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight text-balance">
                   Your Trusted Partner in Healthcare
                 </h1>
                 <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
-                  Since 2010, MediCare has been dedicated to providing
+                  Since 2010, MediStore  has been dedicated to providing
                   high-quality medical supplies and healthcare products to
                   families across the nation. We believe everyone deserves
                   access to reliable healthcare products at affordable prices.
@@ -121,7 +121,7 @@ export default function AboutPage() {
                 <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
                   <Image
                     src="/images/about-hero.jpg"
-                    alt="MediCare Pharmacy"
+                    alt="MediStore  Pharmacy"
                     fill
                     className="object-cover"
                   />
@@ -199,7 +199,7 @@ export default function AboutPage() {
                   Built on Trust & Care
                 </h2>
                 <p className="text-muted-foreground mb-4 leading-relaxed">
-                  MediCare was founded with a simple vision: to make quality
+                  MediStore  was founded with a simple vision: to make quality
                   healthcare products accessible to everyone. What started as a
                   small family pharmacy has grown into a trusted online
                   destination for medical supplies.
