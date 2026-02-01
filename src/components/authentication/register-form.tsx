@@ -41,9 +41,12 @@ export function RegisterForm() {
     }
   };
 
-  const handleGoogleSignup = () => {
-    // Add Google OAuth logic here
-    console.log("Google signup clicked");
+  const handleGoogleSignup = async () => {
+    const data = await authClient.signIn.social({
+      provider: 'google',
+      callbackURL: window.location.origin,
+    });
+    console.log("Google signup clicked", data);
   };
 
   return (

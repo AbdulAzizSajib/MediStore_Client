@@ -9,6 +9,7 @@ import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Textarea } from "@/src/components/ui/textarea";
 import { Label } from "@/src/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/src/components/ui/radio-group";
 import { useAppSelector, useAppDispatch } from "@/src/store/hooks";
 import {
   selectCartItems,
@@ -31,13 +32,14 @@ export default function CheckoutPage() {
 
   const [phone, setPhone] = useState("");
   const [shippingAddress, setShippingAddress] = useState("");
+  const [shippingLocation, setShippingLocation] = useState<"insideDhaka" | "outsideDhaka">("insideDhaka");
   const [errors, setErrors] = useState<{ phone?: string; address?: string }>(
     {},
   );
 
   const cartItems = useAppSelector(selectCartItems);
   const subtotal = useAppSelector(selectCartSubtotal);
-  const shipping = subtotal > 500 ? 0 : 50;
+  const shipping = shippingLocation === "insideDhaka" ? 80 : 160;
   const total = subtotal + shipping;
 
   useEffect(() => {
@@ -275,16 +277,38 @@ export default function CheckoutPage() {
                         ৳{subtotal.toFixed(2)}
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Shipping</span>
-                      <span className="font-medium">
-                        {shipping === 0 ? (
-                          <span className="text-green-600">Free</span>
-                        ) : (
-                          `৳${shipping.toFixed(2)}`
-                        )}
-                      </span>
+
+                    {/* Shipping Location Selection */}
+                    <div className="border-t border-border pt-3">
+                      <p className="text-sm font-medium text-foreground mb-2">
+                        Shipping Charge (Cash on Delivery)
+                      </p>
+                      <RadioGroup
+                        value={shippingLocation}
+                        onValueChange={(value: "insideDhaka" | "outsideDhaka") => setShippingLocation(value)}
+                        className="space-y-2"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="insideDhaka" id="checkout-insideDhaka" />
+                            <Label htmlFor="checkout-insideDhaka" className="text-sm cursor-pointer">
+                              Inside Dhaka
+                            </Label>
+                          </div>
+                          <span className="text-sm font-medium">৳80</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="outsideDhaka" id="checkout-outsideDhaka" />
+                            <Label htmlFor="checkout-outsideDhaka" className="text-sm cursor-pointer">
+                              Outside Dhaka
+                            </Label>
+                          </div>
+                          <span className="text-sm font-medium">৳160</span>
+                        </div>
+                      </RadioGroup>
                     </div>
+
                     <div className="border-t border-border pt-3">
                       <div className="flex justify-between">
                         <span className="font-semibold text-foreground">

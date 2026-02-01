@@ -43,11 +43,8 @@ export function LoginForm() {
   const handleGoogleLogin = async() => {
     const data = await authClient.signIn.social({
       provider: 'google',
-      // callbackURL: "http://localhost:3000",
       callbackURL: `${env.NEXT_PUBLIC_FRONTEND_URL}`,
-
     })
-    // Add Google OAuth logic here
     console.log("Google login clicked", data);
   };
 

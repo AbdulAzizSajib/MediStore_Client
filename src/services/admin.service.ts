@@ -71,7 +71,7 @@ export const adminService = {
   updateUserStatus: async (id: string, status: string) => {
     try {
       const cookieStore = await cookies();
-      const res = await fetch(`${API_URL}/user/${id}`, {
+      const res = await fetch(`${API_URL}/user/${id}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
