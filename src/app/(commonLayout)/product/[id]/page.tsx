@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { productService } from "@/src/services/product.service";
+import { reviewService } from "@/src/services/review.service";
+import { userService } from "@/src/services/user.service";
 import { Badge } from "@/src/components/ui/badge";
 import {
   Tabs,
@@ -9,14 +11,9 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/src/components/ui/tabs";
-import {
-  Star,
-  Truck,
-  Shield,
-  RefreshCw,
-  ChevronRight,
-} from "lucide-react";
+import { Star, Truck, Shield, RefreshCw, ChevronRight } from "lucide-react";
 import { ProductQuantitySelector } from "./product-quantity-selector";
+import { ProductReviews } from "./product-reviews";
 
 interface ProductDetailPageProps {
   params: Promise<{ id: string }>;
@@ -26,13 +23,32 @@ export default async function ProductDetailPage({
   params,
 }: ProductDetailPageProps) {
   const { id } = await params;
-  const { data: product, error } = await productService.getProductById(id);
+  const [productResult, reviewsResult, sessionResult] = await Promise.all([
+    productService.getProductById(id),
+    reviewService.getMedicineReviews(id),
+    userService.getSession(),
+  ]);
+
+  const { data: product, error } = productResult;
 
   if (error || !product) {
     notFound();
   }
 
-  const price = parseFloat(product.price);
+  const reviews = reviewsResult.data || [];
+  const isLoggedIn = !!sessionResult.data;
+  const userId = sessionResult.data?.user?.id;
+  const userReview = reviews.find((r) => r.user?.id === userId) || null;
+
+  const price = parseFloat(product.price as string);
+  if (isNaN(price)) {
+    notFound();
+  }
+
+  const averageRating =
+    reviews.length > 0
+      ? reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length
+      : 0;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -74,14 +90,17 @@ export default async function ProductDetailPage({
                     className="object-cover"
                     priority
                   />
-                  {product.status === "AVAILABLE" && product.stock > 0 && (
+                  {product.status === "AVAILABLE" && product.stock > 0 ? (
                     <Badge className="absolute top-4 right-4 bg-green-500 text-white">
                       In Stock
                     </Badge>
-                  )}
-                  {product.stock === 0 && (
+                  ) : product.stock <= 0 ? (
                     <Badge className="absolute top-4 right-4 bg-red-500 text-white">
                       Out of Stock
+                    </Badge>
+                  ) : (
+                    <Badge className="absolute top-4 right-4 bg-yellow-500 text-white">
+                      {product.status}
                     </Badge>
                   )}
                 </div>
@@ -105,16 +124,23 @@ export default async function ProductDetailPage({
 
                 {/* Rating */}
                 <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1">
+                  <div
+                    className="flex items-center gap-1"
+                    role="img"
+                    aria-label={`Rating: ${averageRating.toFixed(1)} out of 5 stars`}
+                  >
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        className={`h-5 w-5 ${i < 4 ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground"}`}
+                        className={`h-5 w-5 ${i < Math.floor(averageRating) ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground"}`}
+                        aria-hidden="true"
                       />
                     ))}
                   </div>
                   <span className="text-sm text-muted-foreground">
-                    (24 reviews)
+                    {averageRating > 0 && `${averageRating.toFixed(1)} `}(
+                    {reviews.length}{" "}
+                    {reviews.length === 1 ? "review" : "reviews"})
                   </span>
                 </div>
 
@@ -215,7 +241,7 @@ export default async function ProductDetailPage({
                   value="reviews"
                   className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-3"
                 >
-                  Reviews (24)
+                  Reviews ({reviews.length})
                 </TabsTrigger>
               </TabsList>
 
@@ -271,44 +297,12 @@ export default async function ProductDetailPage({
               </TabsContent>
 
               <TabsContent value="reviews" className="bg-card rounded-xl p-6">
-                <div className="space-y-6">
-                  {[1, 2, 3].map((review) => (
-                    <div
-                      key={review}
-                      className="border-b border-border pb-6 last:border-0"
-                    >
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center">
-                          <span className="font-semibold text-foreground">
-                            JD
-                          </span>
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between mb-2">
-                            <h4 className="font-semibold text-foreground">
-                              John Doe
-                            </h4>
-                            <span className="text-sm text-muted-foreground">
-                              2 days ago
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-1 mb-2">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                className={`h-4 w-4 ${i < 5 ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground"}`}
-                              />
-                            ))}
-                          </div>
-                          <p className="text-muted-foreground">
-                            Excellent product! Works exactly as described. Fast
-                            delivery and great packaging. Highly recommend.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <ProductReviews
+                  medicineId={id}
+                  initialReviews={reviews}
+                  userReview={userReview}
+                  isLoggedIn={isLoggedIn}
+                />
               </TabsContent>
             </Tabs>
           </div>
