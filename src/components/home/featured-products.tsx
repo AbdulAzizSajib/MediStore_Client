@@ -9,7 +9,7 @@ export async function FeaturedProducts() {
   return (
     <div className="container mx-auto px-4">
       <div className="flex items-center justify-between  mb-4">
-        <h2 className="text-3xl font-bold">Best Selling Products</h2>
+        <h2 className="text-3xl font-bold">Featured Products</h2>
         <Link
           href="/products/best-sellers"
           className="flex items-center gap-2 text-primary font-medium hover:underline"
