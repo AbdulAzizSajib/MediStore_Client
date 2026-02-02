@@ -28,12 +28,9 @@ import {
 import { Roles } from "@/src/constants/roles";
 import { authClient } from "@/src/lib/auth-client";
 import { useToast } from "@/src/hooks/use-toast";
+import { getAllProductsAction } from "@/src/actions/admin.action";
 
-export function Header({
-  userRole,
-}: {
-  userRole?: string;
-}) {
+export function Header({ userRole }: { userRole?: string }) {
   const router = useRouter();
   const { toast } = useToast();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -72,6 +69,16 @@ export function Header({
       });
     } finally {
       setIsLoggingOut(false);
+    }
+  };
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const query = formData.get("search") as string;
+    if (query && query.trim()) {
+      router.push(`/shop?search=${encodeURIComponent(query.trim())}`);
+      setMobileMenuOpen(false);
     }
   };
 
@@ -124,24 +131,28 @@ export function Header({
                 />
               </svg>
             </div>
-            <span className="text-xl font-bold text-foreground">MediStore </span>
+            <span className="text-xl font-bold text-foreground">
+              MediStore{" "}
+            </span>
           </Link>
 
           {/* Search Bar */}
           <div className="hidden md:flex flex-1 max-w-xl mx-8">
-            <div className="relative w-full">
+            <form onSubmit={handleSearch} className="relative w-full">
               <Input
                 type="text"
+                name="search"
                 placeholder="Search for products..."
                 className="w-full pl-4 pr-12 py-2 rounded-full border-2 border-primary/20 focus:border-primary"
               />
               <Button
+                type="submit"
                 size="icon"
                 className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full h-8 w-8 bg-primary hover:bg-primary/90"
               >
                 <Search className="h-4 w-4" />
               </Button>
-            </div>
+            </form>
           </div>
 
           {/* Actions */}
@@ -280,19 +291,21 @@ export function Header({
         <div className="md:hidden bg-card border-b border-border">
           <div className="container mx-auto px-4 py-4">
             {/* Mobile Search */}
-            <div className="relative mb-4">
+            <form onSubmit={handleSearch} className="relative mb-4">
               <Input
                 type="text"
+                name="search"
                 placeholder="Search for products..."
                 className="w-full pl-4 pr-12 py-2 rounded-full border-2 border-primary/20"
               />
               <Button
+                type="submit"
                 size="icon"
                 className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full h-8 w-8 bg-primary"
               >
                 <Search className="h-4 w-4" />
               </Button>
-            </div>
+            </form>
 
             <ul className="space-y-3">
               <li>

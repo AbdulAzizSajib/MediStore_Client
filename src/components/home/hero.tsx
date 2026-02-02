@@ -11,7 +11,7 @@ export function Hero() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* Main Banner */}
-          <div className="lg:col-span-2 relative rounded-2xl overflow-hidden bg-secondary min-h-[400px]">
+          <div className="lg:col-span-2 relative rounded-2xl overflow-hidden bg-secondary min-h-100">
             <Image
               src="/images/hero-thermometer.jpg"
               alt="Digital Thermometer"
@@ -19,7 +19,7 @@ export function Hero() {
               className="object-cover"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-r from-foreground/70 to-transparent" />
             <div className="absolute inset-0 flex flex-col justify-center p-8 md:p-12">
               <span className="text-primary-foreground/80 text-sm font-medium mb-2">
                 Home Medical Supplies
@@ -43,14 +43,14 @@ export function Hero() {
           {/* Side Banners */}
           <div className="flex flex-col gap-4">
             {/* Top Side Banner */}
-            <div className="relative rounded-2xl overflow-hidden bg-primary/10 flex-1 min-h-[190px]">
+            <div className="relative rounded-2xl overflow-hidden bg-primary/10 flex-1 min-h-47.5">
               <Image
                 src="/images/hero-medicine.jpg"
                 alt="Medicine Products"
                 fill
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-r from-foreground/60 to-transparent " />
               <div className="absolute inset-0 flex flex-col justify-end p-6">
                 <span className="text-background/80 text-xs font-medium mb-1">
                   Home Medical Supplies
@@ -59,7 +59,7 @@ export function Hero() {
                   Medicine Product
                 </h3>
                 <p className="text-background/80 text-sm mb-3">
-                  $1.00 - $55.00
+                  100 Taka - 500 Taka
                 </p>
                 <Link href="/shop?category=medicine">
                   <Button size="sm" variant="secondary" className="w-fit">
@@ -70,14 +70,14 @@ export function Hero() {
             </div>
 
             {/* Bottom Side Banner */}
-            <div className="relative rounded-2xl overflow-hidden bg-accent/10 flex-1 min-h-[190px]">
+            <div className="relative rounded-2xl overflow-hidden bg-accent/10 flex-1 min-h-47.5  ">
               <Image
                 src="/images/hero-living.jpg"
                 alt="Independent Living"
                 fill
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-r from-foreground/60 to-transparent" />
               <div className="absolute inset-0 flex flex-col justify-end p-6">
                 <span className="text-background/80 text-xs font-medium mb-1">
                   Home Medical Supplies
@@ -86,7 +86,7 @@ export function Hero() {
                   Independent Living
                 </h3>
                 <p className="text-background/80 text-sm mb-3">
-                  $45.00 - $55.00
+                  1200 Taka - 1400 Taka
                 </p>
                 <Link href="/shop?category=living">
                   <Button size="sm" variant="secondary" className="w-fit">

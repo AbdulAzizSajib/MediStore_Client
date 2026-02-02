@@ -123,7 +123,7 @@ export function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                 <span className="text-background/70">
-                  123 Healthcare Ave, Medical District, NY 10001
+                  Merul Badda, Dhaka, Bangladesh
                 </span>
               </li>
               <li className="flex items-center gap-3">
@@ -132,7 +132,9 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-primary shrink-0" />
-                <span className="text-background/70">support@MediStore .com</span>
+                <span className="text-background/70">
+                  support@MediStore .com
+                </span>
               </li>
             </ul>
           </div>

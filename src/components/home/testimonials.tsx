@@ -1,34 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 
 const testimonials = [
   {
     id: 1,
     content:
-      "Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui.",
-    author: "Samanta Williams",
-    role: "Home Cleaning",
-    avatar: "/images/avatar-1.jpg",
+      "I ordered my diabetes medicine and it arrived within 2 days. All products are genuine and prices are very reasonable. Great service!",
+    author: "Karim Ahmed",
+    role: "Customer from Dhaka",
+    rating: 5,
   },
   {
     id: 2,
     content:
-      "Exceptional service and quality products! The delivery was fast and the customer support team was incredibly helpful. I've been a loyal customer for over 2 years now and couldn't be happier with their service.",
-    author: "Michael Johnson",
-    role: "Healthcare Professional",
-    avatar: "/images/avatar-2.jpg",
+      "Best online medicine store in Bangladesh. I regularly buy my father's heart medicines here. Fast delivery and authentic products every time.",
+    author: "Fatima Rahman",
+    role: "Regular Customer",
+    rating: 5,
   },
   {
     id: 3,
     content:
-      "The best online pharmacy I've ever used. Great prices, authentic products, and excellent customer service. Highly recommend to anyone looking for reliable medical supplies.",
-    author: "Emily Davis",
-    role: "Nurse Practitioner",
-    avatar: "/images/avatar-3.jpg",
+      "Excellent customer service and quality medical supplies. I bought a blood pressure monitor and it works perfectly. Highly recommended!",
+    author: "Rahim Islam",
+    role: "Customer from Chittagong",
+    rating: 5,
   },
 ];
 
@@ -57,23 +56,20 @@ export function Testimonials() {
 
             {/* Content */}
             <div className="flex flex-col md:flex-row gap-8 items-center">
-              {/* Avatar */}
-              <div className="shrink-0">
-                <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-primary">
-                  <Image
-                    src={testimonials[activeIndex].avatar || "/placeholder.svg"}
-                    alt={testimonials[activeIndex].author}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-
               {/* Text */}
               <div className="flex-1 text-center md:text-left">
                 <h3 className="text-xl font-semibold text-foreground mb-2">
                   Good Customer Service
                 </h3>
+                {/* Rating Stars */}
+                <div className="flex gap-1 justify-center md:justify-start mb-3">
+                  {[...Array(testimonials[activeIndex].rating)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                    />
+                  ))}
+                </div>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
                   {testimonials[activeIndex].content}
                 </p>

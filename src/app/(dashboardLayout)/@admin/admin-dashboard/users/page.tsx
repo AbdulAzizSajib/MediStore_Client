@@ -57,11 +57,10 @@ export default async function AllUsersPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Phone</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead className="w-50">Name</TableHead>
+                <TableHead className="w-50">Email</TableHead>
+                <TableHead className="w-50">Role</TableHead>
+                <TableHead className="w-50">Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -70,7 +69,6 @@ export default async function AllUsersPage() {
                   <TableRow key={user.id}>
                     <TableCell className="font-medium">{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.phone}</TableCell>
                     <TableCell>
                       <Badge
                         variant={

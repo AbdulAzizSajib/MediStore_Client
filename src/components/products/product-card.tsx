@@ -58,7 +58,7 @@ export function ProductCard({ product }: ProductCardProps) {
         imageUrl: product.imageUrl || "/placeholder.svg",
         stock: product.stock,
         manufacturer: product.manufacturer,
-      })
+      }),
     );
     toast({
       title: "Added to cart",
@@ -127,7 +127,7 @@ export function ProductCard({ product }: ProductCardProps) {
         {product.category && (
           <div className="flex flex-wrap gap-1 mb-2">
             <span className="text-xs text-primary">
-              [{product.category.name}]
+              {product.category.name}
             </span>
           </div>
         )}
